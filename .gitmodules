@@ -1,0 +1,6 @@
+[submodule "iot-api"]
+	path = iot-api
+	url = https://github.com/ohmji/iot-api
+[submodule "iot-platform-nextjs"]
+	path = iot-platform-nextjs
+	url = https://github.com/ohmji/iot-platform-nextjs
