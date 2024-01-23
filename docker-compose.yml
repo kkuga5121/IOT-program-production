@@ -25,6 +25,7 @@ services:
     networks:
       - nesjs-network
     restart: unless-stopped
+    
   iot-program-proxy:
     container_name: iot-program-proxy
     image: nginx:alpine
