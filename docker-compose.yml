@@ -1,0 +1,45 @@
+version : '3.8'
+
+services:
+  iot-program-nextjs-web:
+    container_name: iot-program-nextjs-web
+    build:
+      context: ./iot-platform-nextjs
+      dockerfile: Dockerfile
+    image: iot-program-nextjs:1.0.0
+    networks:
+      - nesjs-network
+    restart: unless-stopped
+  iot-program-nestjs-api:
+    container_name: iot-program-nestjs-api
+    image:  iot-program-nestjs:1.0.0
+    build:
+      context: ./iot-api
+      dockerfile: Dockerfile
+    env_file:
+      - ./iot-api/.env
+    ports:
+      - 3000:3000
+    volumes:
+      - /mnt/nfs/local-store:/local-store
+    networks:
+      - nesjs-network
+    restart: unless-stopped
+  iot-program-proxy:
+    container_name: iot-program-proxy
+    image: nginx:alpine
+    volumes:
+       - ./config/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 443:443
+      - 88:88
+      - 8080:8080
+      - 3001:3001
+    networks:
+      - nesjs-network
+    restart: unless-stopped 
+networks:
+  nesjs-network:
+    driver: bridge
+volumes:
+  local-store: 
