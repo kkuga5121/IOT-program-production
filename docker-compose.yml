@@ -9,6 +9,8 @@ services:
     image: iot-program-nextjs:1.0.0
     networks:
       - nesjs-network
+    # env_file:
+    #   - ./iot-api/.env
     restart: unless-stopped
   iot-program-nestjs-api:
     container_name: iot-program-nestjs-api
@@ -18,14 +20,14 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./iot-api/.env
-    ports:
-      - 3000:3000
+    # ports:
+    #   - 3000:3000
     volumes:
       - /mnt/nfs/local-store:/local-store
     networks:
       - nesjs-network
     restart: unless-stopped
-    
+
   iot-program-proxy:
     container_name: iot-program-proxy
     image: nginx:alpine
@@ -36,6 +38,7 @@ services:
       - 88:88
       - 8080:8080
       - 3001:3001
+      # - 3000:3000
     networks:
       - nesjs-network
     restart: unless-stopped 
