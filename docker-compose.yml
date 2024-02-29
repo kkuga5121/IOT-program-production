@@ -9,6 +9,8 @@ services:
     image: iot-program-nextjs:1.0.0
     networks:
       - nesjs-network
+    env_file:
+      - .env
     # env_file:
     #   - ./iot-api/.env
     restart: unless-stopped
@@ -19,7 +21,7 @@ services:
       context: ./iot-api
       dockerfile: Dockerfile
     env_file:
-      - ./iot-api/.env
+      - .env
     # ports:
     #   - 3000:3000
     volumes:
@@ -42,6 +44,20 @@ services:
     networks:
       - nesjs-network
     restart: unless-stopped 
+  mosquitto:
+    image: eclipse-mosquitto
+    hostname: mosquitto
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto:/etc/mosquitto
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - nesjs-network
+  
 networks:
   nesjs-network:
     driver: bridge
